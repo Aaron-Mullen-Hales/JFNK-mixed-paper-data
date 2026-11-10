@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+# Regenerate the 35 figure files of the JFNK mixed pressure-displacement paper from the data in this folder.
+# PLOTTING ONLY: no simulation is run and no input file is modified.
+#
+#   ./Allrun                      all figures  ->  generatedFigures/   (flat, manuscript file names)
+#   ./Allrun --case <benchmark>   one benchmark only (may be repeated):
+#                                 fourier  mms  linearCooks  nonlinearCooks  beam  inflation  contraction
+#   ./Allrun --check              check dependencies and input files only; nothing is plotted
+#   ./Allrun --out <dir>          another output folder
+#
+# Environment: PYTHON (default: ./.venv/bin/python if present, else python3), JFNK_PAPER_FONT_FILE. See README.md.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$HERE"
+
+OUT="${OUT:-$HERE/generatedFigures}"
+CASES=""; CHECK_ONLY=0
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --case)          [ $# -ge 2 ] || { echo "ERROR: --case needs a benchmark name" >&2; exit 2; }
+                         CASES="$CASES $2"; shift ;;
+        --case=*)        CASES="$CASES ${1#--case=}" ;;
+        --check)         CHECK_ONLY=1 ;;
+        --out)           [ $# -ge 2 ] || { echo "ERROR: --out needs a directory" >&2; exit 2; }
+                         OUT="$2"; shift ;;
+        -h|--help)       sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        *)               echo "ERROR: unknown option '$1' (see ./Allrun --help)" >&2; exit 2 ;;
+    esac
+    shift
+done
+
+if [ -n "${PYTHON:-}" ]; then PY="$PYTHON"
+elif [ -x "$HERE/.venv/bin/python" ]; then PY="$HERE/.venv/bin/python"
+else PY="python3"; fi
+command -v "$PY" >/dev/null 2>&1 || { echo "ERROR: python interpreter '$PY' not found (set PYTHON; see README.md)" >&2; exit 1; }
+export MPLBACKEND=Agg PYTHONDONTWRITEBYTECODE=1 JFNK_PAPER_STYLE_DIR="$HERE/plotStyle"
+
+# normalised list of selected cases (validates the names)
+SELECTED="$("$PY" - "$CASES" <<'EOF'
+import sys
+sys.dont_write_bytecode = True
+sys.path.insert(0, "tools")
+from package_info import parse_cases
+print(" ".join(parse_cases(sys.argv[1])))
+EOF
+)"
+CASELIST="${SELECTED// /,}"
+want() { case " $SELECTED " in *" $1 "*) return 0 ;; *) return 1 ;; esac; }
+
+# ---- checks before anything is drawn -------------------------------------------------------------------
+CHECK_ARGS=(--deps --inputs --cases "$CASELIST")
+"$PY" tools/check_package.py "${CHECK_ARGS[@]}" || { echo "ERROR: dependency or input check failed; nothing was plotted" >&2; exit 1; }
+if [ "$CHECK_ONLY" = 1 ]; then
+    echo "check only: dependencies and inputs are in order for: $SELECTED"
+    exit 0
+fi
+
+case "$OUT" in /*) ;; *) OUT="$PWD/$OUT" ;; esac
+WORK="$OUT/_work"; SERIES="$WORK/series"
+mkdir -p "$OUT" "$WORK" "$SERIES" "$WORK/vector_variants"
+for c in $SELECTED; do mkdir -p "$WORK/$c"; done
+
+# step <label> <command ...>: run one plotting command; stop at the first failure
+step() {
+    local label="$1"; shift
+    echo "== $label"
+    if ! "$@" 2> >(grep -v "extra bytes in post\|timestamp seems very low\|findfont" >&2); then
+        echo "ERROR: step failed: $label" >&2
+        echo "       command: $*" >&2
+        exit 1
+    fi
+}
+# install <file> ...: copy finished figure files into the flat output folder
+install_fig() { local f; for f in "$@"; do [ -s "$f" ] || { echo "ERROR: expected file was not produced: $f" >&2; exit 1; }; cp -f "$f" "$OUT/"; done; }
+# static <file>: documented static asset, copied unchanged
+static() { echo "== static asset: $(basename "$1")"; install_fig "$1"; }
+compose() { "$PY" imageFigureScripts/compose_field_figure.py "$@"; }
+
+# ---- 01 Fourier verification ----------------------------------------------------------------------------
+if want fourier; then
+    D=01_fourierVerification
+    step "Fig 1: normalised spectral cuts" "$PY" $D/plotScripts/plotPaperFigures.py $D/data/stabilisationFourierCheck \
+        --output "$WORK/fourier" --only-cuts --dump-series "$SERIES/fourier.json"
+    install_fig "$WORK/fourier/normalisedSpectralCuts.pdf"
+    mkdir -p "$OUT/tables"
+    step "Table: maximum Fourier errors -> tables/fourier_max_errors.txt" bash -c \
+        '"$1" "$2/plotScripts/tableMaxErrors.py" "$2/data/stabilisationFourierCheck" > "$3"' _ "$PY" "$D" "$OUT/tables/fourier_max_errors.txt"
+fi
+
+# ---- 02 Manufactured solution ---------------------------------------------------------------------------
+if want mms; then
+    D=02_manufacturedSolution
+    step "Figs 3, 4: MMS displacement and stress errors and orders" "$PY" $D/plotScripts/mms_paper_figures.py \
+        --data-dir $D/data/recoveredOriginalRun_2026-09-02_Apple_M4_Pro_171316 --slope-dir $D/plotScripts \
+        --output-dir "$WORK/mms_disp_stress" --quantities disp stress --dump-series "$SERIES/mms_disp_stress.json"
+    step "Fig 5: MMS pressure errors and orders" "$PY" $D/plotScripts/mms_paper_figures.py \
+        --data-dir $D/data --slope-dir $D/plotScripts \
+        --output-dir "$WORK/mms_pressure" --quantities pressure --dump-series "$SERIES/mms_pressure.json"
+    install_fig "$WORK/mms_disp_stress/mms_dispErrors.pdf" "$WORK/mms_disp_stress/mms_disp_orderOfAccuracy.pdf" \
+        "$WORK/mms_disp_stress/mms_stressErrors_v2.pdf" "$WORK/mms_disp_stress/mms_stress_orderOfAccuracy_v2.pdf" \
+        "$WORK/mms_pressure/mms_pressureErrors.pdf" "$WORK/mms_pressure/mms_pressure_orderOfAccuracy.pdf"
+    LAYER=$D/data/fieldRenderLayer/fig2b_layer
+    step "Fig 2(b): sigma_xx field panel (raster layer + colour bar)" compose --layer "$LAYER.png" --width-fraction 0.51 --aspect 0.56 \
+        "--range=-1.58399,4.2972" --levels 11 "--ticks=-1.58399,0,1,2,3,4.2972" "--tick-labels=−1.6,0,1,2,3,4.3" \
+        --title '$\sigma_{xx}$ [MPa]' --title-top --image-box "0.0,0.02,0.74,0.96" --bar-box "0.80,0.10,0.04,0.72" \
+        --metadata "$LAYER.json" --out "$OUT/MMS_SigmaXX (2).pdf"
+    static $D/figures/MMS_Poly_Mesh.pdf
+fi
+
+# ---- 03 Linear Cook's membrane (main text and appendix) ---------------------------------------------------
+if want linearCooks; then
+    D=03_linearCooksMembrane
+    step "Figs 7, 8, 9(b), 17, 18: linear Cook's membrane (13 PDFs)" "$PY" $D/plotScripts/plot_paper.py --mode full \
+        --summary-dir $D/data/derived_summary --output-dir "$WORK/linearCooks" --dump-series "$SERIES/linearCooks.json"
+    for sm in sm1p0 sm0p1; do
+        install_fig "$WORK/linearCooks/figure5_structured_displacement_$sm.pdf" "$WORK/linearCooks/figure5_execution_time_vs_error_$sm.pdf" \
+            "$WORK/linearCooks/figure6_pressure_scale_m1_$sm.pdf" "$WORK/linearCooks/figure6_pressure_scale_m2_$sm.pdf" \
+            "$WORK/linearCooks/figure6_pressure_scale_m3_$sm.pdf" "$WORK/linearCooks/figure6_pressure_scale_rhiechow_$sm.pdf"
+    done
+    install_fig "$WORK/linearCooks/figure7b_unstructured_displacement.pdf"
+    static $D/figures/cooksDiagram.png
+    static $D/figures/cooksCoarseMesh2.png
+    static $D/figures/unstructured_cooks3.png
+fi
+
+# ---- 04 Nonlinear Cook's membrane -----------------------------------------------------------------------
+if want nonlinearCooks; then
+    D=04_nonlinearCooksMembrane
+    step "Figs 10(b), 11: nonlinear Cook's membrane" "$PY" $D/plotScripts/plot_nonlinear_cooks.py \
+        --compressible-data $D/compressible/data --incompressible-data $D/nearIncompressible/data \
+        --output-dir "$WORK/nonlinearCooks" --dump-series "$SERIES/nonlinearCooks.json"
+    install_fig "$WORK/nonlinearCooks/LargeStrainCooksIncomp.pdf" \
+        "$WORK/nonlinearCooks/largeStrainIncompCooksMembrane-neoHookeanTipDispConvergenceStabCompatible.pdf"
+    LAYER=$D/compressible/data/fieldRenderLayer/fig10a_layer
+    step "Fig 10(a): equivalent-stress field panel (raster layer + colour bar)" compose --layer "$LAYER.png" --width-fraction 0.40 --aspect 1.0 \
+        "--range=3.207794921875,336.758" --levels 11 "--ticks=3.207794921875,50,100,150,200,250,300,336.758" \
+        "--tick-labels=3.2,50,100,150,200,250,300,337" --title "Equivalent stress [kPa]" \
+        --image-box "0.0,0.02,0.70,0.96" --bar-box "0.73,0.10,0.045,0.80" --metadata "$LAYER.json" \
+        --out "$OUT/sigmaCompressibleLargeStrainCooks_cropped_kPa.png" "$WORK/vector_variants/sigmaCompressibleLargeStrainCooks_cropped_kPa.pdf"
+fi
+
+# ---- 05 Heart-tissue beam (Land et al. 2015, problem 1) ---------------------------------------------------
+if want beam; then
+    D=05_heartTissueBeam
+    step "Fig 13: deformed tip coordinate vs cell size" "$PY" $D/plotScripts/plot_land_problem1.py \
+        --summary $D/data/beam.summary.txt --stats $D/data/reference_data/land_problem1_reference_stats.gp \
+        --output-dir "$WORK/beam" --dump-series "$SERIES/beam.json"
+    install_fig "$WORK/beam/land_problem1_m3_verticalDisplacement_vs_cellSize.pdf"
+    step "Fig 12(b): raster of the original export" pdfimages -png $D/data/landDefomed_original_powerpoint_export.pdf "$WORK/beam/fig12b_src"
+    step "Fig 12(b): deformed beam panel (original raster + colour bar)" compose --layer "$WORK/beam/fig12b_src-000.png" \
+        --width-fraction 0.48 --aspect 0.56 "--range=0,3.2" --levels 11 "--ticks=0,3.2" --title "|D| [mm]" --title-top \
+        --image-box "0.0,0.02,0.80,0.96" --bar-box "0.85,0.12,0.04,0.70" --out "$OUT/landDefomed.pdf"
+    static $D/figures/landbeam.png
+fi
+
+# ---- 06 Idealised LV inflation (problem 2) ----------------------------------------------------------------
+L=06_lvInflation/plotScripts      # scripts shared by Figs 15 and 16
+if want inflation; then
+    D=06_lvInflation
+    step "Fig 15: inflation mid-wall lines (data layer)" "$PY" $L/render_land_midline_layers.py --problem 2 --data-dir $D/data \
+        --output "$WORK/inflation/land_problem2_m3_combined_layer.pdf" --dump-series "$SERIES/inflation.json"
+    step "Fig 15: composite with the Land et al. (2015) overlay" "$PY" $L/composite_land_overlay.py --problem 2 \
+        --overlay $D/data/land_problem2_m3_combined_overlay_original_keynote.pdf \
+        --layer "$WORK/inflation/land_problem2_m3_combined_layer.pdf" --output "$OUT/land_problem2_m3_combined_overlay.pdf"
+    LAYER=$D/data/fieldRenderLayer/fig14b_layer
+    step "Fig 14(b): |D| field panel (raster layer + colour bar)" compose --layer "$LAYER.png" --width-fraction 0.50 --aspect 1.01 \
+        "--range=0,9.485" --levels 0 "--ticks=0,2,4,6,8,9.485" "--tick-labels=0,2,4,6,8,9.5" \
+        --title "Displacement magnitude |D| [mm]" --image-box "0.0,0.02,0.72,0.96" --bar-box "0.76,0.12,0.045,0.76" \
+        --metadata "$LAYER.json" --out "$OUT/LandDeformed.png" "$WORK/vector_variants/LandDeformed.pdf"
+    static $D/figures/Land_Geom.png
+fi
+
+# ---- 07 Idealised LV active contraction (problem 3) -------------------------------------------------------
+if want contraction; then
+    D=07_lvContraction
+    step "Fig 16: contraction mid-wall lines (data layer)" "$PY" $L/render_land_midline_layers.py --problem 3 --data-dir $D/data \
+        --output "$WORK/contraction/land_problem3_m3_combined_layer.pdf" --dump-series "$SERIES/contraction.json"
+    step "Fig 16: composite with the Land et al. (2015) overlay" "$PY" $L/composite_land_overlay.py --problem 3 \
+        --overlay $D/data/land_problem3_m3_combined_overlay_original_keynote.pdf \
+        --layer "$WORK/contraction/land_problem3_m3_combined_layer.pdf" --output "$OUT/land_problem3_m3_combined_overlay.pdf"
+fi
+
+# ---- checks after drawing: outputs complete, curves complete, plotted numbers = inputs, inputs untouched ----
+"$PY" tools/check_package.py --outputs "$OUT" --cases "$CASELIST" \
+    || { echo "ERROR: output check failed" >&2; exit 1; }
+"$PY" tools/verify_numerics.py "$OUT" --cases "$CASELIST" --report "$WORK/verification_numerics.md" > "$WORK/verification_numerics.log" \
+    || { echo "ERROR: numerical verification failed (plotted values or derived quantities); see $WORK/verification_numerics.md" >&2
+         grep "FAIL" "$WORK/verification_numerics.log" | head -n 20 >&2; exit 1; }
+echo "== plotted arrays equal the package inputs ($(grep -c '^  ok' "$WORK/verification_numerics.md") checks; $WORK/verification_numerics.md)"
+"$PY" tools/check_package.py --inputs --cases "$CASELIST" > /dev/null \
+    || { echo "ERROR: an input file changed during the run" >&2; exit 1; }
+echo "== inputs unchanged"
+echo "Done: figure files for [$SELECTED] are in $OUT"

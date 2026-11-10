@@ -1,0 +1,263 @@
+{
+ "beam.json": {
+  "land_problem1_m3_verticalDisplacement_vs_cellSize.pdf": {
+   "reference:max": 2,
+   "reference:median": 2,
+   "reference:min": 2,
+   "simulation:coupled_m2": 5
+  }
+ },
+ "contraction.json": {
+  "land_problem3_layer": {
+   "mesh1": 100,
+   "mesh2": 100,
+   "mesh3": 100
+  }
+ },
+ "fourier.json": {
+  "normalisedSpectralCuts.pdf": {
+   "cut0:JST:analytical": 201,
+   "cut0:JST:measured:16x16x1": 4,
+   "cut0:JST:measured:32x32x1": 4,
+   "cut0:JST:measured:64x64x1": 4,
+   "cut0:RhieChow:analytical": 201,
+   "cut0:RhieChow:measured:16x16x1": 4,
+   "cut0:RhieChow:measured:32x32x1": 4,
+   "cut0:RhieChow:measured:64x64x1": 4,
+   "cut0:gen2:analytical": 201,
+   "cut0:gen2:measured:16x16x1": 4,
+   "cut0:gen2:measured:32x32x1": 4,
+   "cut0:gen2:measured:64x64x1": 4,
+   "cut0:laplacian:analytical": 201,
+   "cut0:laplacian:measured:16x16x1": 4,
+   "cut0:laplacian:measured:32x32x1": 4,
+   "cut0:laplacian:measured:64x64x1": 4,
+   "cut1:JST:analytical": 201,
+   "cut1:JST:measured:16x16x1": 3,
+   "cut1:JST:measured:32x32x1": 3,
+   "cut1:JST:measured:64x64x1": 3,
+   "cut1:RhieChow:analytical": 201,
+   "cut1:RhieChow:measured:16x16x1": 3,
+   "cut1:RhieChow:measured:32x32x1": 3,
+   "cut1:RhieChow:measured:64x64x1": 3,
+   "cut1:gen2:analytical": 201,
+   "cut1:gen2:measured:16x16x1": 3,
+   "cut1:gen2:measured:32x32x1": 3,
+   "cut1:gen2:measured:64x64x1": 3,
+   "cut1:laplacian:analytical": 201,
+   "cut1:laplacian:measured:16x16x1": 3,
+   "cut1:laplacian:measured:32x32x1": 3,
+   "cut1:laplacian:measured:64x64x1": 3,
+   "cut2:JST:analytical": 201,
+   "cut2:JST:measured:16x16x1": 3,
+   "cut2:JST:measured:32x32x1": 3,
+   "cut2:JST:measured:64x64x1": 3,
+   "cut2:RhieChow:analytical": 201,
+   "cut2:RhieChow:measured:16x16x1": 3,
+   "cut2:RhieChow:measured:32x32x1": 3,
+   "cut2:RhieChow:measured:64x64x1": 3,
+   "cut2:gen2:analytical": 201,
+   "cut2:gen2:measured:16x16x1": 3,
+   "cut2:gen2:measured:32x32x1": 3,
+   "cut2:gen2:measured:64x64x1": 3,
+   "cut2:laplacian:analytical": 201,
+   "cut2:laplacian:measured:16x16x1": 3,
+   "cut2:laplacian:measured:32x32x1": 3,
+   "cut2:laplacian:measured:64x64x1": 3
+  }
+ },
+ "inflation.json": {
+  "land_problem2_layer": {
+   "mesh1": 100,
+   "mesh2": 100,
+   "mesh3": 100
+  }
+ },
+ "linearCooks.json": {
+  "figure5_execution_time_vs_error_sm0p1.pdf": {
+   "coupled_m0": 4,
+   "coupled_m1": 4,
+   "coupled_m2": 4,
+   "jst": 4,
+   "laplacian": 4,
+   "rhiechow": 4
+  },
+  "figure5_execution_time_vs_error_sm1p0.pdf": {
+   "coupled_m0": 4,
+   "coupled_m1": 4,
+   "coupled_m2": 4,
+   "jst": 4,
+   "laplacian": 4,
+   "rhiechow": 4
+  },
+  "figure5_structured_displacement_sm0p1.pdf": {
+   "Bijelonja (2006)": 7,
+   "coupled_m0": 6,
+   "coupled_m1": 6,
+   "coupled_m2": 6,
+   "jst": 6,
+   "laplacian": 6,
+   "rhiechow": 6
+  },
+  "figure5_structured_displacement_sm1p0.pdf": {
+   "Bijelonja (2006)": 7,
+   "coupled_m0": 6,
+   "coupled_m1": 6,
+   "coupled_m2": 6,
+   "jst": 6,
+   "laplacian": 6,
+   "rhiechow": 6
+  },
+  "figure6_pressure_scale_m1_sm0p1.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_m1_sm1p0.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_m2_sm0p1.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_m2_sm1p0.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_m3_sm0p1.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_m3_sm1p0.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_rhiechow_sm0p1.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure6_pressure_scale_rhiechow_sm1p0.pdf": {
+   "Bijelonja (2006)": 7,
+   "sp=0.01": 6,
+   "sp=0.1": 6,
+   "sp=1": 6,
+   "sp=10": 6,
+   "sp=100": 6,
+   "sp=1000": 6
+  },
+  "figure7b_unstructured_displacement.pdf": {
+   "Bijelonja (2006)": 7,
+   "coupled_m0": 6,
+   "coupled_m1": 6,
+   "coupled_m2": 6,
+   "jst": 6,
+   "laplacian": 6,
+   "rhiechow": 6
+  }
+ },
+ "mms_disp_stress.json": {
+  "mms_dispErrors.pdf": {
+   "distHex:max": 5,
+   "distHex:rms": 5,
+   "guide:first-order": 3,
+   "guide:second-order": 3,
+   "hex:max": 5,
+   "hex:rms": 5,
+   "poly:max": 5,
+   "poly:rms": 5
+  },
+  "mms_disp_orderOfAccuracy.pdf": {
+   "distHex:max": 4,
+   "distHex:rms": 4,
+   "hex:max": 4,
+   "hex:rms": 4,
+   "poly:max": 4,
+   "poly:rms": 4
+  },
+  "mms_stressErrors_v2.pdf": {
+   "distHex:max": 5,
+   "distHex:rms": 5,
+   "guide:first-order": 7,
+   "guide:second-order": 7,
+   "hex:max": 5,
+   "hex:rms": 5,
+   "poly:max": 5,
+   "poly:rms": 5
+  },
+  "mms_stress_orderOfAccuracy_v2.pdf": {
+   "distHex:max": 4,
+   "distHex:rms": 4,
+   "hex:max": 4,
+   "hex:rms": 4,
+   "poly:max": 4,
+   "poly:rms": 4
+  }
+ },
+ "mms_pressure.json": {
+  "mms_pressureErrors.pdf": {
+   "distHex:max": 5,
+   "distHex:rms": 5,
+   "guide:first-order": 7,
+   "guide:second-order": 7,
+   "hex:max": 5,
+   "hex:rms": 5,
+   "poly:max": 5,
+   "poly:rms": 5
+  },
+  "mms_pressure_orderOfAccuracy.pdf": {
+   "distHex:max": 4,
+   "distHex:rms": 4,
+   "hex:max": 4,
+   "hex:rms": 4,
+   "poly:max": 4,
+   "poly:rms": 4
+  }
+ },
+ "nonlinearCooks.json": {
+  "LargeStrainCooksIncomp.pdf": {
+   "Abaqus CPE4H": 7,
+   "Pelteret-McBride Q1": 6,
+   "Pelteret-McBride Q2": 6,
+   "present:coupled_m2": 8
+  },
+  "largeStrainIncompCooksMembrane-neoHookeanTipDispConvergenceStabCompatible.pdf": {
+   "Abaqus CPE4RH": 2,
+   "present:coupled_m2": 7
+  }
+ }
+}

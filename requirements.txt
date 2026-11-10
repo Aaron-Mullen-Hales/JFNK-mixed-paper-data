@@ -1,0 +1,6 @@
+# Python packages used by the plotting scripts and the checks (versions used for the approved figures, 10 Nov 2026)
+matplotlib==3.11.0
+numpy==2.5.0
+reportlab==4.5.1
+pypdf==6.21.2
+pillow==12.2.0

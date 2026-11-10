@@ -1,0 +1,36 @@
+{
+ "camera": {
+  "position": [
+   0.02121298165729968,
+   0.03687531066157135,
+   0.19886456169165298
+  ],
+  "focal": [
+   0.02121298165729968,
+   0.03687531066157135,
+   0.0
+  ],
+  "viewup": [
+   0.0,
+   1.0,
+   0.0
+  ],
+  "parallel": true,
+  "parallel_scale": 0.052049468623136655,
+  "view_angle": 30.0
+ },
+ "array": "sigmaEq",
+ "range": [
+  3207.794921875,
+  336758.0
+ ],
+ "levels": 11,
+ "scale_factor": 1.0,
+ "time": 30.0,
+ "case": "/Volumes/OpenFoam/aaronmullen-hales-v2312/run/paper1Code/papers/JFNK_mixed/figureStaging_2026-10-29/review/work/imageFigures/cases/cooks_m2_mesh7/case.foam",
+ "warp": "D",
+ "clip": null,
+ "slice": null,
+ "wireframe_opacity": 0.0,
+ "surface_from_patches": false
+}

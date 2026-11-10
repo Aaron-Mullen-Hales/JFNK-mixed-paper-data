@@ -1,0 +1,37 @@
+study	case	mesh_index	cells_per_side	method	method_label	paper_m	laplacian_power	sp	sm	scaleFactorJacobian	normalise	referenceNyquistDirections	dy_scaled	execution_time_s	status
+structured	normalised_r2/sm0p1/structured/rhiechow/mesh_01	1	3.0	rhiechow	Rhie-Chow			10.0	0.1	1.0	true	2	10.014	0.14	OK
+structured	normalised_r2/sm0p1/structured/rhiechow/mesh_02	2	6.0	rhiechow	Rhie-Chow			10.0	0.1	1.0	true	2	8.03726	0.15	OK
+structured	normalised_r2/sm0p1/structured/rhiechow/mesh_03	3	12.0	rhiechow	Rhie-Chow			10.0	0.1	1.0	true	2	7.79912	0.16	OK
+structured	normalised_r2/sm0p1/structured/rhiechow/mesh_04	4	24.0	rhiechow	Rhie-Chow			10.0	0.1	1.0	true	2	7.75838	0.26	OK
+structured	normalised_r2/sm0p1/structured/rhiechow/mesh_05	5	48.0	rhiechow	Rhie-Chow			10.0	0.1	1.0	true	2	7.76287	0.82	OK
+structured	normalised_r2/sm0p1/structured/rhiechow/mesh_06	6	96.0	rhiechow	Rhie-Chow			10.0	0.1	1.0	true	2	7.76834	4.14	OK
+structured	normalised_r2/sm0p1/structured/laplacian/mesh_01	1	3.0	laplacian	Laplacian			10.0	0.1	1.0	true	2	9.62271	0.14	OK
+structured	normalised_r2/sm0p1/structured/laplacian/mesh_02	2	6.0	laplacian	Laplacian			10.0	0.1	1.0	true	2	7.89053	0.14	OK
+structured	normalised_r2/sm0p1/structured/laplacian/mesh_03	3	12.0	laplacian	Laplacian			10.0	0.1	1.0	true	2	7.75892	0.16	OK
+structured	normalised_r2/sm0p1/structured/laplacian/mesh_04	4	24.0	laplacian	Laplacian			10.0	0.1	1.0	true	2	7.7472900000000005	0.24	OK
+structured	normalised_r2/sm0p1/structured/laplacian/mesh_05	5	48.0	laplacian	Laplacian			10.0	0.1	1.0	true	2	7.76	0.74	OK
+structured	normalised_r2/sm0p1/structured/laplacian/mesh_06	6	96.0	laplacian	Laplacian			10.0	0.1	1.0	true	2	7.76766	5.79	OK
+structured	normalised_r2/sm0p1/structured/jst/mesh_01	1	3.0	jst	JST			10.0	0.1	1.0	true	2	8.44908	0.13	OK
+structured	normalised_r2/sm0p1/structured/jst/mesh_02	2	6.0	jst	JST			10.0	0.1	1.0	true	2	7.48779	0.15	OK
+structured	normalised_r2/sm0p1/structured/jst/mesh_03	3	12.0	jst	JST			10.0	0.1	1.0	true	2	7.61262	0.17	OK
+structured	normalised_r2/sm0p1/structured/jst/mesh_04	4	24.0	jst	JST			10.0	0.1	1.0	true	2	7.6847	0.25	OK
+structured	normalised_r2/sm0p1/structured/jst/mesh_05	5	48.0	jst	JST			10.0	0.1	1.0	true	2	7.73103	0.81	OK
+structured	normalised_r2/sm0p1/structured/jst/mesh_06	6	96.0	jst	JST			10.0	0.1	1.0	true	2	7.754300000000001	6.32	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m0/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	10.0	0.1	1.0	true	2	9.62271	0.14	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m0/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	10.0	0.1	1.0	true	2	7.89053	0.13	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m0/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	10.0	0.1	1.0	true	2	7.75892	0.16	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m0/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	10.0	0.1	1.0	true	2	7.7472900000000005	0.24	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m0/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	10.0	0.1	1.0	true	2	7.76	0.73	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m0/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	10.0	0.1	1.0	true	2	7.76766	5.8	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m1/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	10.0	0.1	1.0	true	2	8.44908	0.13	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m1/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	10.0	0.1	1.0	true	2	7.48779	0.15	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m1/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	10.0	0.1	1.0	true	2	7.61262	0.16	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m1/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	10.0	0.1	1.0	true	2	7.6847	0.26	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m1/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	10.0	0.1	1.0	true	2	7.73103	0.85	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m1/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	10.0	0.1	1.0	true	2	7.754300000000001	6.46	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m2/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	10.0	0.1	1.0	true	2	8.28798	0.14	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m2/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	10.0	0.1	1.0	true	2	7.351380000000001	0.14	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m2/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	10.0	0.1	1.0	true	2	7.57313	0.17	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m2/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	10.0	0.1	1.0	true	2	7.65965	0.28	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m2/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	10.0	0.1	1.0	true	2	7.71566	0.93	OK
+structured	normalised_r2/sm0p1/structured/evenlap_m2/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	10.0	0.1	1.0	true	2	7.74594	6.07	OK

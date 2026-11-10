@@ -1,0 +1,145 @@
+study	case	mesh_index	cells_per_side	method	method_label	paper_m	laplacian_power	sp	sm	scaleFactorJacobian	normalise	referenceNyquistDirections	dy_scaled	execution_time_s	status
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p01/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	0.01	1.0	1.0	true	2	3.6578000000000004	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p01/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	0.01	1.0	1.0	true	2	3.4731799999999997	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p01/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	0.01	1.0	1.0	true	2	5.254300000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p01/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	0.01	1.0	1.0	true	2	6.73247	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p01/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	0.01	1.0	1.0	true	2	7.31417	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p01/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	0.01	1.0	1.0	true	2	7.54005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p1/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	0.1	1.0	1.0	true	2	3.73739	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p1/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	0.1	1.0	1.0	true	2	4.2802299999999995	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p1/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	0.1	1.0	1.0	true	2	6.05966	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p1/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	0.1	1.0	1.0	true	2	7.00379	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p1/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	0.1	1.0	1.0	true	2	7.393890000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_0p1/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	0.1	1.0	1.0	true	2	7.57566	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	1	1.0	1.0	true	2	3.9216100000000003	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	1	1.0	1.0	true	2	5.07291	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	1	1.0	1.0	true	2	6.40749	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	1	1.0	1.0	true	2	7.14441	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	1	1.0	1.0	true	2	7.46689	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	1	1.0	1.0	true	2	7.626270000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_10/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	10	1.0	1.0	true	2	4.56375	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_10/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	10	1.0	1.0	true	2	5.60728	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_10/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	10	1.0	1.0	true	2	6.70347	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_10/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	10	1.0	1.0	true	2	7.28963	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_10/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	10	1.0	1.0	true	2	7.54969	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_10/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	10	1.0	1.0	true	2	7.66978	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_100/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	100	1.0	1.0	true	2	6.01238	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_100/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	100	1.0	1.0	true	2	7.255850000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_100/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	100	1.0	1.0	true	2	7.60137	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_100/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	100	1.0	1.0	true	2	7.656090000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_100/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	100	1.0	1.0	true	2	7.694590000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_100/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	100	1.0	1.0	true	2	7.72865	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1000/mesh_01	1	3.0	evenlap_m0	Even Laplacian, m=1	1	0	1000	1.0	1.0	true	2	6.69599	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1000/mesh_02	2	6.0	evenlap_m0	Even Laplacian, m=1	1	0	1000	1.0	1.0	true	2	10.4828	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1000/mesh_03	3	12.0	evenlap_m0	Even Laplacian, m=1	1	0	1000	1.0	1.0	true	2	11.5624	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1000/mesh_04	4	24.0	evenlap_m0	Even Laplacian, m=1	1	0	1000	1.0	1.0	true	2	9.57836	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1000/mesh_05	5	48.0	evenlap_m0	Even Laplacian, m=1	1	0	1000	1.0	1.0	true	2	8.402600000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m0/sp_1000/mesh_06	6	96.0	evenlap_m0	Even Laplacian, m=1	1	0	1000	1.0	1.0	true	2	7.98643	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p01/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	0.01	1.0	1.0	true	2	3.6012800000000005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p01/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	0.01	1.0	1.0	true	2	3.4067800000000004	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p01/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	0.01	1.0	1.0	true	2	5.05551	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p01/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	0.01	1.0	1.0	true	2	6.6285	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p01/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	0.01	1.0	1.0	true	2	7.28636	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p01/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	0.01	1.0	1.0	true	2	7.53187	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p1/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	0.1	1.0	1.0	true	2	3.63914	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p1/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	0.1	1.0	1.0	true	2	3.97194	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p1/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	0.1	1.0	1.0	true	2	5.88809	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p1/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	0.1	1.0	1.0	true	2	6.94344	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p1/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	0.1	1.0	1.0	true	2	7.3722900000000005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_0p1/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	0.1	1.0	1.0	true	2	7.56372	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	1	1.0	1.0	true	2	3.8014099999999997	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	1	1.0	1.0	true	2	4.86693	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	1	1.0	1.0	true	2	6.30114	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	1	1.0	1.0	true	2	7.09764	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	1	1.0	1.0	true	2	7.4411499999999995	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	1	1.0	1.0	true	2	7.6105100000000006	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_10/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	10	1.0	1.0	true	2	3.9576700000000002	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_10/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	10	1.0	1.0	true	2	5.2285	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_10/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	10	1.0	1.0	true	2	6.50895	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_10/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	10	1.0	1.0	true	2	7.20611	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_10/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	10	1.0	1.0	true	2	7.5112	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_10/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	10	1.0	1.0	true	2	7.65218	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_100/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	100	1.0	1.0	true	2	4.730060000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_100/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	100	1.0	1.0	true	2	5.55295	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_100/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	100	1.0	1.0	true	2	6.6918999999999995	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_100/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	100	1.0	1.0	true	2	7.30228	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_100/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	100	1.0	1.0	true	2	7.5641300000000005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_100/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	100	1.0	1.0	true	2	7.67799	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1000/mesh_01	1	3.0	evenlap_m1	Even Laplacian, m=2	2	1	1000	1.0	1.0	true	2	6.19338	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1000/mesh_02	2	6.0	evenlap_m1	Even Laplacian, m=2	2	1	1000	1.0	1.0	true	2	6.36158	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1000/mesh_03	3	12.0	evenlap_m1	Even Laplacian, m=2	2	1	1000	1.0	1.0	true	2	6.98128	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1000/mesh_04	4	24.0	evenlap_m1	Even Laplacian, m=2	2	1	1000	1.0	1.0	true	2	7.41444	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1000/mesh_05	5	48.0	evenlap_m1	Even Laplacian, m=2	2	1	1000	1.0	1.0	true	2	7.614310000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m1/sp_1000/mesh_06	6	96.0	evenlap_m1	Even Laplacian, m=2	2	1	1000	1.0	1.0	true	2	7.70141	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p01/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	0.01	1.0	1.0	true	2	3.5074400000000003	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p01/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	0.01	1.0	1.0	true	2	3.3817600000000003	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p01/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	0.01	1.0	1.0	true	2	4.90089	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p01/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	0.01	1.0	1.0	true	2	6.52757	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p01/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	0.01	1.0	1.0	true	2	7.2598	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p01/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	0.01	1.0	1.0	true	2	7.5247399999999995	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p1/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	0.1	1.0	1.0	true	2	3.5080500000000003	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p1/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	0.1	1.0	1.0	true	2	3.68413	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p1/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	0.1	1.0	1.0	true	2	5.68154	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p1/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	0.1	1.0	1.0	true	2	6.8754	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p1/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	0.1	1.0	1.0	true	2	7.35023	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_0p1/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	0.1	1.0	1.0	true	2	7.55358	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	1	1.0	1.0	true	2	3.7132600000000004	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	1	1.0	1.0	true	2	4.63671	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	1	1.0	1.0	true	2	6.20084	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	1	1.0	1.0	true	2	7.05618	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	1	1.0	1.0	true	2	7.4199	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	1	1.0	1.0	true	2	7.5963400000000005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_10/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	10	1.0	1.0	true	2	3.81855	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_10/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	10	1.0	1.0	true	2	5.08938	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_10/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	10	1.0	1.0	true	2	6.43147	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_10/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	10	1.0	1.0	true	2	7.16724	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_10/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	10	1.0	1.0	true	2	7.48854	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_10/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	10	1.0	1.0	true	2	7.64029	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_100/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	100	1.0	1.0	true	2	3.8399099999999997	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_100/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	100	1.0	1.0	true	2	5.32626	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_100/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	100	1.0	1.0	true	2	6.58658	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_100/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	100	1.0	1.0	true	2	7.25542	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_100/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	100	1.0	1.0	true	2	7.541189999999999	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_100/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	100	1.0	1.0	true	2	7.667140000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1000/mesh_01	1	3.0	evenlap_m2	Even Laplacian, m=3	3	2	1000	1.0	1.0	true	2	4.90225	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1000/mesh_02	2	6.0	evenlap_m2	Even Laplacian, m=3	3	2	1000	1.0	1.0	true	2	5.51444	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1000/mesh_03	3	12.0	evenlap_m2	Even Laplacian, m=3	3	2	1000	1.0	1.0	true	2	6.72286	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1000/mesh_04	4	24.0	evenlap_m2	Even Laplacian, m=3	3	2	1000	1.0	1.0	true	2	7.3246	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1000/mesh_05	5	48.0	evenlap_m2	Even Laplacian, m=3	3	2	1000	1.0	1.0	true	2	7.5765400000000005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/evenlap_m2/sp_1000/mesh_06	6	96.0	evenlap_m2	Even Laplacian, m=3	3	2	1000	1.0	1.0	true	2	7.683890000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p01/mesh_01	1	3.0	rhiechow	Rhie-Chow			0.01	1.0	1.0	true	2	3.6354800000000003	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p01/mesh_02	2	6.0	rhiechow	Rhie-Chow			0.01	1.0	1.0	true	2	3.47658	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p01/mesh_03	3	12.0	rhiechow	Rhie-Chow			0.01	1.0	1.0	true	2	5.302560000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p01/mesh_04	4	24.0	rhiechow	Rhie-Chow			0.01	1.0	1.0	true	2	6.74901	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p01/mesh_05	5	48.0	rhiechow	Rhie-Chow			0.01	1.0	1.0	true	2	7.31618	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p01/mesh_06	6	96.0	rhiechow	Rhie-Chow			0.01	1.0	1.0	true	2	7.54057	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p1/mesh_01	1	3.0	rhiechow	Rhie-Chow			0.1	1.0	1.0	true	2	3.73785	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p1/mesh_02	2	6.0	rhiechow	Rhie-Chow			0.1	1.0	1.0	true	2	4.34039	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p1/mesh_03	3	12.0	rhiechow	Rhie-Chow			0.1	1.0	1.0	true	2	6.08554	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p1/mesh_04	4	24.0	rhiechow	Rhie-Chow			0.1	1.0	1.0	true	2	7.01022	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p1/mesh_05	5	48.0	rhiechow	Rhie-Chow			0.1	1.0	1.0	true	2	7.39633	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_0p1/mesh_06	6	96.0	rhiechow	Rhie-Chow			0.1	1.0	1.0	true	2	7.577560000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1/mesh_01	1	3.0	rhiechow	Rhie-Chow			1	1.0	1.0	true	2	3.98293	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1/mesh_02	2	6.0	rhiechow	Rhie-Chow			1	1.0	1.0	true	2	5.151	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1/mesh_03	3	12.0	rhiechow	Rhie-Chow			1	1.0	1.0	true	2	6.4486099999999995	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1/mesh_04	4	24.0	rhiechow	Rhie-Chow			1	1.0	1.0	true	2	7.16124	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1/mesh_05	5	48.0	rhiechow	Rhie-Chow			1	1.0	1.0	true	2	7.47395	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1/mesh_06	6	96.0	rhiechow	Rhie-Chow			1	1.0	1.0	true	2	7.62948	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_10/mesh_01	1	3.0	rhiechow	Rhie-Chow			10	1.0	1.0	true	2	4.83413	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_10/mesh_02	2	6.0	rhiechow	Rhie-Chow			10	1.0	1.0	true	2	5.76999	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_10/mesh_03	3	12.0	rhiechow	Rhie-Chow			10	1.0	1.0	true	2	6.796930000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_10/mesh_04	4	24.0	rhiechow	Rhie-Chow			10	1.0	1.0	true	2	7.32922	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_10/mesh_05	5	48.0	rhiechow	Rhie-Chow			10	1.0	1.0	true	2	7.565300000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_10/mesh_06	6	96.0	rhiechow	Rhie-Chow			10	1.0	1.0	true	2	7.676010000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_100/mesh_01	1	3.0	rhiechow	Rhie-Chow			100	1.0	1.0	true	2	6.19005	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_100/mesh_02	2	6.0	rhiechow	Rhie-Chow			100	1.0	1.0	true	2	7.21335	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_100/mesh_03	3	12.0	rhiechow	Rhie-Chow			100	1.0	1.0	true	2	7.40528	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_100/mesh_04	4	24.0	rhiechow	Rhie-Chow			100	1.0	1.0	true	2	7.5872	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_100/mesh_05	5	48.0	rhiechow	Rhie-Chow			100	1.0	1.0	true	2	7.67791	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_100/mesh_06	6	96.0	rhiechow	Rhie-Chow			100	1.0	1.0	true	2	7.72548	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1000/mesh_01	1	3.0	rhiechow	Rhie-Chow			1000	1.0	1.0	true	2	6.60836	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1000/mesh_02	2	6.0	rhiechow	Rhie-Chow			1000	1.0	1.0	true	2	10.1608	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1000/mesh_03	3	12.0	rhiechow	Rhie-Chow			1000	1.0	1.0	true	2	8.86876	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1000/mesh_04	4	24.0	rhiechow	Rhie-Chow			1000	1.0	1.0	true	2	8.08257	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1000/mesh_05	5	48.0	rhiechow	Rhie-Chow			1000	1.0	1.0	true	2	7.878010000000001	nan	OK
+parameter	normalised_r2/sm1p0/parameter/rhiechow/sp_1000/mesh_06	6	96.0	rhiechow	Rhie-Chow			1000	1.0	1.0	true	2	7.81149	nan	OK
