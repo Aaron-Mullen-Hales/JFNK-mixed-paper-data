@@ -9,12 +9,14 @@ the text is readable at the size printed in the cas-sc manuscript):
   ``\\linewidth = 468.33 pt`` (6.48 in), body text 10 pt, captions 9 pt.  The
   font sizes below are therefore the printed sizes: legend, tick and
   annotation text is 8 pt (80 % of the body text), axis labels 9 pt.
-* Font family Helvetica (the macOS TrueType file), embedded as a subset
-  (``pdf.fonttype 42``); mathematics is set in the same family so that
-  ``$m$``, ``$s_p^\\star$`` and ``$\\theta/\\pi$`` match the surrounding text.
+* Font family STIX (STIXGeneral, the copy bundled with matplotlib), embedded
+  as a subset (``pdf.fonttype 42``).  The manuscript class cas-sc loads the
+  ``stix`` package, so tick labels, words and mathematics (``mathtext.fontset
+  = "stix"``) match the text and equations of the paper.
 * Full axes box, ticks outside on the bottom/left, a subtle dotted light-grey
   major grid drawn behind the data, white legend background without a frame.
-* Line width 1.1 pt, open markers 4.5 pt with 1.0 pt edges.
+* Line width 0.8 pt, open markers 4.5 pt with 0.75 pt edges (Elsevier
+  minimum 0.5 pt).
 * Method identities (colour, marker) are fixed across the paper, see
   :data:`METHOD_STYLES`.  Quantities that are not methods (pressure-scale
   sweeps, mesh families, mesh levels, error measures) use their own,
@@ -66,13 +68,18 @@ FONT_SIZES = {
     "panel_label": 9.0,
 }
 
-FONT_FAMILY = "Helvetica"
-FONT_FALLBACKS = ["Arial", "Liberation Sans", "DejaVu Sans"]
+FONT_FAMILY = "STIXGeneral"
 
-LINE_WIDTH = 1.1
+
+def stix_font_file(bold: bool = False) -> str:
+    """Path of matplotlib's bundled STIXGeneral TrueType file (used by reportlab layers)."""
+    name = "STIXGeneralBol.ttf" if bold else "STIXGeneral.ttf"
+    return str(Path(matplotlib.get_data_path()) / "fonts" / "ttf" / name)
+
+LINE_WIDTH = 0.8
 MARKER_SIZE = 4.5
-MARKER_EDGE_WIDTH = 1.0
-REFERENCE_LINE_WIDTH = 1.1
+MARKER_EDGE_WIDTH = 0.75
+REFERENCE_LINE_WIDTH = 0.8
 GRID_COLOUR = "#D6D6D6"
 INK = "#111111"
 
@@ -83,8 +90,8 @@ def fig_width(fraction: float) -> float:
 
 
 RC_PARAMS = {
-    "font.family": "sans-serif",
-    "font.sans-serif": [FONT_FAMILY, *FONT_FALLBACKS],
+    "font.family": "serif",
+    "font.serif": [FONT_FAMILY],
     "font.size": FONT_SIZES["annotation"],
     "axes.labelsize": FONT_SIZES["label"],
     "axes.titlesize": FONT_SIZES["title"],
@@ -93,12 +100,9 @@ RC_PARAMS = {
     "legend.fontsize": FONT_SIZES["legend"],
     "legend.title_fontsize": FONT_SIZES["legend_title"],
     "figure.titlesize": FONT_SIZES["title"],
-    "mathtext.fontset": "custom",
-    "mathtext.rm": FONT_FAMILY,
-    "mathtext.it": f"{FONT_FAMILY}:italic",
-    "mathtext.bf": f"{FONT_FAMILY}:bold",
+    "mathtext.fontset": "stix",
     "mathtext.default": "it",
-    "mathtext.fallback": "stixsans",
+    "axes.unicode_minus": True,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
     "pdf.compression": 6,
@@ -233,6 +237,9 @@ REFERENCE_STYLES: list[SeriesStyle] = [
 # readable).  Colours are NOT method colours; the marker in each panel is the
 # marker of the method shown in that panel.
 PRESSURE_SCALE_ORDER = ("0.01", "0.1", "1", "10", "100", "1000")
+# One open marker per s_p^star value, the same in every panel of Figs 8/18
+# (the method is named by the sub-caption).  Avoids the benchmark's "v".
+PRESSURE_SCALE_MARKERS = {"0.01": "o", "0.1": "s", "1": "D", "10": "^", "100": "p", "1000": "*"}
 
 
 def pressure_scale_colours() -> dict[str, str]:
@@ -305,6 +312,252 @@ def new_figure(width_fraction: float = 0.49, aspect: float = 0.70, *,
                              layout="constrained", **subplot_kw)
     fig.get_layout_engine().set(w_pad=0.03, h_pad=0.03, wspace=0.04, hspace=0.04)
     return fig, axes
+
+
+# ---------------------------------------------------------------------------
+# Subfigures: fixed axes box, legend band above the axes
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class SubfigureLayout:
+    """Fixed geometry [in] of one subfigure PDF.
+
+    All subfigures of a block share one layout, so their axes boxes have the
+    same size and position and line up on the page.  ``legend_rows`` reserves
+    a band above the axes; use the largest row count of the block so that
+    the bands (and therefore the axes) stay aligned.
+    """
+
+    width_fraction: float = 0.49
+    axes_height_in: float = 1.70
+    left_in: float = 0.50
+    right_in: float = 0.08
+    bottom_in: float = 0.40
+    top_in: float = 0.04
+    legend_rows: int = 0
+    legend_gap_in: float = 0.05
+    legend_side: str = "top"        # "top": band above the axes; "right": column beside them
+    legend_width_in: float = 0.0    # width of the right-hand legend column
+
+    @property
+    def width_in(self) -> float:
+        return fig_width(self.width_fraction)
+
+    @property
+    def axes_width_in(self) -> float:
+        side = self.legend_width_in + self.legend_gap_in if self.legend_side == "right" else 0.0
+        return self.width_in - self.left_in - self.right_in - side
+
+    @property
+    def legend_band_in(self) -> float:
+        if self.legend_side not in ("top", "bottom") or self.legend_rows <= 0:
+            return 0.0
+        fs = FONT_SIZES["legend"]
+        rows = self.legend_rows * fs * (1.0 + RC_PARAMS["legend.labelspacing"])
+        return (rows + 2.0 * RC_PARAMS["legend.borderpad"] * fs) / 72.0 + self.legend_gap_in
+
+    @property
+    def height_in(self) -> float:
+        return self.bottom_in + self.axes_height_in + self.legend_band_in + self.top_in
+
+    @property
+    def axes_bottom_in(self) -> float:
+        """Lower edge of the axes box; a bottom legend band sits under the x label."""
+        return self.bottom_in + (self.legend_band_in if self.legend_side == "bottom" else 0.0)
+
+
+def new_subfigure(layout: SubfigureLayout, **subplot_kw):
+    """Figure of the printed size with one axes at the fixed box of ``layout``."""
+    apply_style()
+    fig = plt.figure(figsize=(layout.width_in, layout.height_in))
+    rect = (layout.left_in / layout.width_in, layout.axes_bottom_in / layout.height_in,
+            layout.axes_width_in / layout.width_in, layout.axes_height_in / layout.height_in)
+    ax = fig.add_axes(rect, **subplot_kw)
+    ax._pfs_layout = layout  # read by outside_legend
+    return fig, ax
+
+
+def outside_legend(ax, handles=None, *, ncols: int = 1, row_major: bool = True, **kwargs):
+    """Legend in the band above the axes, spread over the axes width.
+
+    Entries are read row by row (matplotlib fills columns first); empty
+    slots of the last row are padded with invisible entries.
+    """
+    layout: SubfigureLayout = getattr(ax, "_pfs_layout")
+    if handles is None:
+        handles = [h for h in ax.get_lines() if not h.get_label().startswith("_")]
+    handles = list(handles)
+    if row_major and ncols > 1:
+        nrows = -(-len(handles) // ncols)
+        blank = Line2D([], [], linestyle="none", marker="none", label=" ")
+        padded = handles + [blank] * (nrows * ncols - len(handles))
+        handles = [padded[r * ncols + c] for c in range(ncols) for r in range(nrows)]
+    gap = layout.legend_gap_in / layout.axes_height_in
+    kwargs.setdefault("loc", "lower left")
+    kwargs.setdefault("bbox_to_anchor", (0.0, 1.0 + gap, 1.0, 0.0))
+    kwargs.setdefault("mode", "expand")
+    kwargs.setdefault("borderaxespad", 0.0)
+    kwargs.setdefault("frameon", False)
+    return ax.legend(handles=handles, ncols=ncols, **kwargs)
+
+
+def right_legends(ax, groups, *, group_gap_pt: float = 5.0, **kwargs):
+    """Legends stacked top-down in the column right of the axes.
+
+    ``groups`` is a list of ``(handles, title)``; ``title`` may be None.
+    """
+    layout: SubfigureLayout = getattr(ax, "_pfs_layout")
+    fig = ax.figure
+    x = 1.0 + layout.legend_gap_in / layout.axes_width_in
+    y = 1.0
+    kwargs.setdefault("frameon", False)
+    kwargs.setdefault("borderaxespad", 0.0)
+    kwargs.setdefault("borderpad", 0.0)
+    legends = []
+    for handles, title in groups:
+        leg = ax.legend(handles=list(handles), title=title, loc="upper left",
+                        bbox_to_anchor=(x, y), alignment="left", **kwargs)
+        ax.add_artist(leg)
+        fig.canvas.draw()
+        box = leg.get_window_extent(fig.canvas.get_renderer()).transformed(ax.transAxes.inverted())
+        y = box.y0 - group_gap_pt / 72.0 / layout.axes_height_in
+        legends.append(leg)
+    return legends
+
+
+def bottom_legends(ax, groups, *, group_gap_pt: float = 14.0, **kwargs):
+    """Legends side by side in the band under the x label, centred on the axes.
+
+    ``groups`` is a list of ``(handles, title, ncols)``; ``title`` may be None.
+    Each group's title is left-aligned above its entries.
+    """
+    layout: SubfigureLayout = getattr(ax, "_pfs_layout")
+    fig = ax.figure
+    y = -(layout.bottom_in - 0.0) / layout.axes_height_in
+    kwargs.setdefault("frameon", False)
+    kwargs.setdefault("borderaxespad", 0.0)
+    kwargs.setdefault("borderpad", 0.0)
+    legends = []
+    for handles, title, ncols in groups:
+        handles = list(handles)
+        if ncols > 1:  # read row by row
+            nrows = -(-len(handles) // ncols)
+            blank = Line2D([], [], linestyle="none", marker="none", label=" ")
+            padded = handles + [blank] * (nrows * ncols - len(handles))
+            handles = [padded[r * ncols + c] for c in range(ncols) for r in range(nrows)]
+        leg = ax.legend(handles=handles, title=title, ncols=ncols, loc="upper left",
+                        bbox_to_anchor=(0.0, y), alignment="left", **kwargs)
+        ax.add_artist(leg)
+        legends.append(leg)
+    # centre the row of groups under the axes box
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    to_axes = ax.transAxes.inverted()
+    widths = [leg.get_window_extent(renderer).transformed(to_axes).width for leg in legends]
+    gap = group_gap_pt / 72.0 / layout.axes_width_in
+    x = 0.5 * (1.0 - sum(widths) - gap * (len(widths) - 1))
+    for leg, width in zip(legends, widths):
+        leg.set_bbox_to_anchor((x, y), transform=ax.transAxes)
+        x += width + gap
+    # untitled groups: first entry on the same row as the first entry of a titled group
+    fig.canvas.draw()
+    titled = [leg for leg, (_, title, _) in zip(legends, groups) if title]
+    if titled:
+        row_top = max(leg.get_texts()[0].get_window_extent(renderer).y1 for leg in titled)
+        for leg, (_, title, _) in zip(legends, groups):
+            if title:
+                continue
+            dy = row_top - leg.get_texts()[0].get_window_extent(renderer).y1
+            anchor = leg.get_bbox_to_anchor().transformed(to_axes)
+            leg.set_bbox_to_anchor((anchor.x0, anchor.y0 + dy / ax.bbox.height), transform=ax.transAxes)
+    return legends
+
+
+def keyed_legend(ax, reference_handles, value_handles, key: str, *, ncols: int = 3,
+                 corner: tuple[float, float] = (0.985, 0.975), **kwargs):
+    """Legend inside the axes, upper right: references on top, values in a grid below.
+
+    Layout (as agreed for Figs 8/18)::
+
+               ▽ Reference
+        key    ○ v1   □ v2   ◇ v3
+               △ v4   ⬠ v5   ★ v6
+
+    ``key`` (e.g. ``$s_p^\\star$``) sits left of the value grid, centred on
+    its rows.  Returns the artists (two legends and the key text); white
+    backgrounds hide the grid behind them.  Values are read row by row.
+    """
+    fig = ax.figure
+    renderer = fig.canvas.get_renderer()
+    to_axes = ax.transAxes.inverted()
+    fs = FONT_SIZES["legend"]
+    style = dict(frameon=True, framealpha=1.0, edgecolor="none", facecolor="white", fancybox=False,
+                 borderpad=0.15, borderaxespad=0.0)
+    style.update(kwargs)
+    values = list(value_handles)
+    nrows = -(-len(values) // ncols)
+    blank = Line2D([], [], linestyle="none", marker="none", label=" ")
+    padded = values + [blank] * (nrows * ncols - len(values))
+    values = [padded[r * ncols + c] for c in range(ncols) for r in range(nrows)]
+
+    # reference row first, to know its height
+    ref = ax.legend(handles=list(reference_handles), loc="upper right", bbox_to_anchor=corner, **style)
+    ax.add_artist(ref)
+    fig.canvas.draw()
+    ref_box = ref.get_window_extent(renderer).transformed(to_axes)
+    row_gap = RC_PARAMS["legend.labelspacing"] * fs / 72.0 / (ax.bbox.height / fig.dpi)
+    grid = ax.legend(handles=values, ncols=ncols, loc="upper right",
+                     bbox_to_anchor=(corner[0], ref_box.y0 - row_gap), **style)
+    ax.add_artist(grid)
+    fig.canvas.draw()
+    grid_box = grid.get_window_extent(renderer).transformed(to_axes)
+    # reference entry aligned with the first column of the grid
+    ref.set_bbox_to_anchor((grid_box.x0 + ref_box.width, ref_box.y1), transform=ax.transAxes)
+    key_gap = 2.0 / 72.0 / (ax.bbox.width / fig.dpi)
+    key_text = ax.text(grid_box.x0 - key_gap, 0.5 * (grid_box.y0 + grid_box.y1), key,
+                       transform=ax.transAxes, ha="right", va="center", fontsize=FONT_SIZES["label"],
+                       color=INK, zorder=ref.get_zorder(),
+                       bbox=dict(facecolor="white", edgecolor="none", pad=0.6))
+    fig.canvas.draw()
+    return [ref, grid, key_text]
+
+
+def assert_artists_clear(fig, ax, artists, context: str = "") -> None:
+    """Fail if any plotted point or segment lies under one of ``artists``."""
+    hits = []
+    for artist in artists:
+        hits += legend_overlaps(fig, ax, artist)
+    if hits:
+        detail = ", ".join(f"{label} ({n})" for label, n in hits)
+        raise RuntimeError(f"legend covers plotted data{' in ' + context if context else ''}: {detail}")
+
+
+def check_subfigure(fig, ax, leg=None, context: str = "", *, tol_pt: float = 0.5) -> None:
+    """Fail if a legend touches the axes box or any text is clipped by the page."""
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    tol = tol_pt * fig.dpi / 72.0
+    where = f" in {context}" if context else ""
+    legends = [] if leg is None else (list(leg) if isinstance(leg, (list, tuple)) else [leg])
+    ab = ax.get_window_extent(renderer)
+    for item in legends:
+        lb = item.get_window_extent(renderer)
+        if lb.x0 < ab.x1 - tol and lb.x1 > ab.x0 + tol and lb.y0 < ab.y1 - tol and lb.y1 > ab.y0 + tol:
+            raise RuntimeError(f"legend overlaps the axes box{where}")
+    from matplotlib.transforms import Bbox
+    boxes = [fig.get_tightbbox(renderer)]  # inches
+    boxes += [item.get_window_extent(renderer).transformed(fig.dpi_scale_trans.inverted()) for item in legends]
+    tight = Bbox.union(boxes)
+    w, h = fig.get_size_inches()
+    t = tol_pt / 72.0
+    if tight.x0 < -t or tight.y0 < -t or tight.x1 > w + t or tight.y1 > h + t:
+        raise RuntimeError(f"content clipped by the page{where}: tight box {tight.bounds} vs page {w:.3f} x {h:.3f} in")
+
+
+def axes_box_pt(fig, ax) -> list[float]:
+    """Axes box [x0, y0, width, height] in pt from the lower-left page corner."""
+    w, h = fig.get_size_inches()
+    x0, y0, bw, bh = ax.get_position().bounds
+    return [round(v, 2) for v in (x0 * w * 72.0, y0 * h * 72.0, bw * w * 72.0, bh * h * 72.0)]
 
 
 def style_axes(ax, *, grid: bool = True, minor: bool = False) -> None:
@@ -465,7 +718,9 @@ __all__ = [
     "SeriesStyle", "METHOD_STYLES", "METHOD_ALIASES", "REFERENCE_STYLES",
     "PRESSURE_SCALE_ORDER", "pressure_scale_colours", "MESH_FAMILY_STYLES",
     "ERROR_MEASURE_STYLES", "MESH_LEVEL_STYLES", "LAND_STAT_STYLES",
-    "apply_style", "fig_width", "new_figure", "style_axes", "legend", "legend_handle",
+    "apply_style", "fig_width", "new_figure", "style_axes", "stix_font_file",
+    "SubfigureLayout", "new_subfigure", "outside_legend", "right_legends", "bottom_legends", "keyed_legend", "assert_artists_clear", "check_subfigure", "axes_box_pt",
+    "PRESSURE_SCALE_MARKERS", "legend", "legend_handle",
     "legend_overlaps", "assert_legend_clear",
     "panel_label", "annotate", "line_kwargs", "reference_kwargs", "method_style",
     "record_series", "record_axes", "write_records", "save", "fonts_embedded",

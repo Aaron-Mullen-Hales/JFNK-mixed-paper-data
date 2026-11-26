@@ -75,6 +75,9 @@ step() {
 install_fig() { local f; for f in "$@"; do [ -s "$f" ] || { echo "ERROR: expected file was not produced: $f" >&2; exit 1; }; cp -f "$f" "$OUT/"; done; }
 # static <file>: documented static asset, copied unchanged
 static() { echo "== static asset: $(basename "$1")"; install_fig "$1"; }
+# static_pdf <image>: static raster wrapped losslessly in a PDF of the same name (content unchanged)
+static_pdf() { local name; name="$(basename "${1%.*}").pdf"
+    step "static asset as PDF: $name" "$PY" imageFigureScripts/raster_to_pdf.py "$1" --output "$OUT/$name"; }
 compose() { "$PY" imageFigureScripts/compose_field_figure.py "$@"; }
 
 # ---- 01 Fourier verification ----------------------------------------------------------------------------
@@ -105,7 +108,11 @@ if want mms; then
         "--range=-1.58399,4.2972" --levels 11 "--ticks=-1.58399,0,1,2,3,4.2972" "--tick-labels=−1.6,0,1,2,3,4.3" \
         --title '$\sigma_{xx}$ [MPa]' --title-top --image-box "0.0,0.02,0.74,0.96" --bar-box "0.80,0.10,0.04,0.72" \
         --metadata "$LAYER.json" --out "$OUT/MMS_SigmaXX (2).pdf"
-    static $D/figures/MMS_Poly_Mesh.pdf
+    # Fig 2(a): polyhedral mesh 3 drawn from its VTK file, at the printed height of 2(b)
+    H2B=$(pdfinfo "$OUT/MMS_SigmaXX (2).pdf" | awk '/Page size/{print $5}')
+    step "Fig 2(a): polyhedral cube mesh drawn from its VTK file (vector)" "$PY" imageFigureScripts/render_vtk_mesh.py \
+        $D/data/mesh/mms_polyhedral_mesh3_8000cells.vtk --view cube --height-pt "$H2B" --edge-width 0.25 \
+        --out "$OUT/MMS_Poly_Mesh.pdf"
 fi
 
 # ---- 03 Linear Cook's membrane (main text and appendix) ---------------------------------------------------
@@ -119,9 +126,12 @@ if want linearCooks; then
             "$WORK/linearCooks/figure6_pressure_scale_m3_$sm.pdf" "$WORK/linearCooks/figure6_pressure_scale_rhiechow_$sm.pdf"
     done
     install_fig "$WORK/linearCooks/figure7b_unstructured_displacement.pdf"
-    static $D/figures/cooksDiagram.png
-    static $D/figures/cooksCoarseMesh2.png
-    static $D/figures/unstructured_cooks3.png
+    step "Fig 6(a): geometry and boundary conditions (vector drawing)" "$PY" $D/plotScripts/draw_cooks_diagram.py \
+        --output "$OUT/cooksDiagram.pdf"
+    step "Fig 6(b): structured mesh 2, 6 x 6 cells (vector drawing)" "$PY" $D/plotScripts/draw_cooks_diagram.py \
+        --mesh 6 --output "$OUT/cooksCoarseMesh2.pdf"
+    step "Fig 9(a): unstructured mesh 3, gmsh Delaunay triangles (vector drawing)" "$PY" $D/plotScripts/draw_cooks_diagram.py \
+        --msh $D/data/unstructuredMesh/trapezoid_mesh3.msh --output "$OUT/unstructured_cooks3.pdf"
 fi
 
 # ---- 04 Nonlinear Cook's membrane -----------------------------------------------------------------------
@@ -137,7 +147,7 @@ if want nonlinearCooks; then
         "--range=3.207794921875,336.758" --levels 11 "--ticks=3.207794921875,50,100,150,200,250,300,336.758" \
         "--tick-labels=3.2,50,100,150,200,250,300,337" --title "Equivalent stress [kPa]" \
         --image-box "0.0,0.02,0.70,0.96" --bar-box "0.73,0.10,0.045,0.80" --metadata "$LAYER.json" \
-        --out "$OUT/sigmaCompressibleLargeStrainCooks_cropped_kPa.png" "$WORK/vector_variants/sigmaCompressibleLargeStrainCooks_cropped_kPa.pdf"
+        --out "$OUT/sigmaCompressibleLargeStrainCooks_cropped_kPa.pdf" "$WORK/vector_variants/sigmaCompressibleLargeStrainCooks_cropped_kPa.png"
 fi
 
 # ---- 05 Heart-tissue beam (Land et al. 2015, problem 1) ---------------------------------------------------
@@ -149,36 +159,44 @@ if want beam; then
     install_fig "$WORK/beam/land_problem1_m3_verticalDisplacement_vs_cellSize.pdf"
     step "Fig 12(b): raster of the original export" pdfimages -png $D/data/landDefomed_original_powerpoint_export.pdf "$WORK/beam/fig12b_src"
     step "Fig 12(b): deformed beam panel (original raster + colour bar)" compose --layer "$WORK/beam/fig12b_src-000.png" \
-        --width-fraction 0.48 --aspect 0.56 "--range=0,3.2" --levels 11 "--ticks=0,3.2" --title "|D| [mm]" --title-top \
+        --width-fraction 0.48 --aspect 0.56 "--range=0,3.2" --levels 11 "--ticks=0,3.2" --title '$|\boldsymbol{D}|$ [mm]' --title-top \
         --image-box "0.0,0.02,0.80,0.96" --bar-box "0.85,0.12,0.04,0.70" --out "$OUT/landDefomed.pdf"
-    static $D/figures/landbeam.png
+    step "Fig 12(a): reference beam mesh drawn from its VTK file (vector)" "$PY" imageFigureScripts/render_vtk_mesh.py \
+        $D/data/mesh/landBeam_level3_40x4x4_mm.vtk --view beam --width-fraction 0.48 --out "$OUT/landbeam.pdf"
 fi
 
 # ---- 06 Idealised LV inflation (problem 2) ----------------------------------------------------------------
 L=06_lvInflation/plotScripts      # scripts shared by Figs 15 and 16
 if want inflation; then
     D=06_lvInflation
-    step "Fig 15: inflation mid-wall lines (data layer)" "$PY" $L/render_land_midline_layers.py --problem 2 --data-dir $D/data \
+    step "Fig 15: inflation mid-wall lines (data layer)" "$PY" $L/render_land_midline_layers.py --problem 2 --layout compact --data-dir $D/data \
         --output "$WORK/inflation/land_problem2_m3_combined_layer.pdf" --dump-series "$SERIES/inflation.json"
-    step "Fig 15: composite with the Land et al. (2015) overlay" "$PY" $L/composite_land_overlay.py --problem 2 \
+    step "Fig 15: composite with the Land et al. (2015) overlay" "$PY" $L/composite_land_overlay.py --problem 2 --layout compact \
         --overlay $D/data/land_problem2_m3_combined_overlay_original_keynote.pdf \
-        --layer "$WORK/inflation/land_problem2_m3_combined_layer.pdf" --output "$OUT/land_problem2_m3_combined_overlay.pdf"
+        --layer "$WORK/inflation/land_problem2_m3_combined_layer.pdf" --output "$WORK/inflation/land_problem2_m3_combined_overlay.pdf"
+    step "Fig 15: one subfigure PDF per panel (a), (b), (c)" "$PY" $L/split_land_panels.py --problem 2 \
+        --input "$WORK/inflation/land_problem2_m3_combined_overlay.pdf" --output-prefix "$OUT/land_problem2_m3_combined_overlay"
     LAYER=$D/data/fieldRenderLayer/fig14b_layer
     step "Fig 14(b): |D| field panel (raster layer + colour bar)" compose --layer "$LAYER.png" --width-fraction 0.50 --aspect 1.01 \
         "--range=0,9.485" --levels 0 "--ticks=0,2,4,6,8,9.485" "--tick-labels=0,2,4,6,8,9.5" \
-        --title "Displacement magnitude |D| [mm]" --image-box "0.0,0.02,0.72,0.96" --bar-box "0.76,0.12,0.045,0.76" \
-        --metadata "$LAYER.json" --out "$OUT/LandDeformed.png" "$WORK/vector_variants/LandDeformed.pdf"
-    static $D/figures/Land_Geom.png
+        --title 'Displacement magnitude $|\boldsymbol{D}|$ [mm]' --image-box "0.0,0.02,0.72,0.96" --bar-box "0.76,0.12,0.045,0.76" \
+        --metadata "$LAYER.json" --out "$OUT/LandDeformed.pdf" "$WORK/vector_variants/LandDeformed.png"
+    # Fig 14(a) at the printed height of 14(b), so the two panels line up
+    H14B=$(pdfinfo "$OUT/LandDeformed.pdf" | awk '/Page size/{print $5}')
+    step "Fig 14(a): reference ventricle mesh drawn from its VTK file (vector)" "$PY" imageFigureScripts/render_vtk_mesh.py \
+        $D/data/mesh/landVentricle_mesh1_15x3x36_mm.vtk --view ventricle --height-pt "$H14B" --out "$OUT/Land_Geom.pdf"
 fi
 
 # ---- 07 Idealised LV active contraction (problem 3) -------------------------------------------------------
 if want contraction; then
     D=07_lvContraction
-    step "Fig 16: contraction mid-wall lines (data layer)" "$PY" $L/render_land_midline_layers.py --problem 3 --data-dir $D/data \
+    step "Fig 16: contraction mid-wall lines (data layer)" "$PY" $L/render_land_midline_layers.py --problem 3 --layout compact --data-dir $D/data \
         --output "$WORK/contraction/land_problem3_m3_combined_layer.pdf" --dump-series "$SERIES/contraction.json"
-    step "Fig 16: composite with the Land et al. (2015) overlay" "$PY" $L/composite_land_overlay.py --problem 3 \
+    step "Fig 16: composite with the Land et al. (2015) overlay" "$PY" $L/composite_land_overlay.py --problem 3 --layout compact \
         --overlay $D/data/land_problem3_m3_combined_overlay_original_keynote.pdf \
-        --layer "$WORK/contraction/land_problem3_m3_combined_layer.pdf" --output "$OUT/land_problem3_m3_combined_overlay.pdf"
+        --layer "$WORK/contraction/land_problem3_m3_combined_layer.pdf" --output "$WORK/contraction/land_problem3_m3_combined_overlay.pdf"
+    step "Fig 16: one subfigure PDF per panel (a), (b), (c)" "$PY" $L/split_land_panels.py --problem 3 \
+        --input "$WORK/contraction/land_problem3_m3_combined_overlay.pdf" --output-prefix "$OUT/land_problem3_m3_combined_overlay"
 fi
 
 # ---- checks after drawing: outputs complete, curves complete, plotted numbers = inputs, inputs untouched ----

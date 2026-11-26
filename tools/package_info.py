@@ -52,14 +52,14 @@ _add("mms", "data",
      *(f"{MMS}/data/{f}.hypre.{k}.txt" for f in FAMILIES for k in ("summary", "orderOfAccuracy")))
 _add("mms", "reference", *(f"{MMS}/plotScripts/orderOfAccuracySlopes{q}.dat" for q in ("Disp", "Stress", "Pressure")))
 _add("mms", "asset", f"{MMS}/data/fieldRenderLayer/fig2b_layer.png", f"{MMS}/data/fieldRenderLayer/fig2b_layer.json")
-_add("mms", "static", f"{MMS}/figures/MMS_Poly_Mesh.pdf")
+_add("mms", "asset", f"{MMS}/data/mesh/mms_polyhedral_mesh3_8000cells.vtk")
 
 _add("linearCooks", "data",
      *(f"{LC}/data/derived_summary/{s}_sm{m}.tsv" for s in ("structured", "parameter") for m in ("1p0", "0p1")),
      f"{LC}/data/derived_summary/unstructured_sm1p0.tsv")
 _add("linearCooks", "reference", f"{LC}/plotScripts/Bijelona.csv")
-_add("linearCooks", "static", f"{LC}/figures/cooksDiagram.png", f"{LC}/figures/cooksCoarseMesh2.png",
-     f"{LC}/figures/unstructured_cooks3.png")
+_add("linearCooks", "asset", f"{LC}/data/unstructuredMesh/trapezoid_mesh3.msh",
+     f"{LC}/data/unstructuredMesh/trapezoidOpenFOAM_mesh3.geo")
 _add("nonlinearCooks", "data", f"{NC}/compressible/data/hex_snes__evenlap_m2.summary.txt",
      f"{NC}/nearIncompressible/data/hex_snes__evenlap_m2.summary.txt")
 _add("nonlinearCooks", "reference", f"{NC}/compressible/data/abaqus.dat", f"{NC}/compressible/data/deal.II.dat")
@@ -70,12 +70,12 @@ _add("beam", "data", f"{BEAM}/data/beam.summary.txt")
 _add("beam", "reference", f"{BEAM}/data/reference_data/land_problem1_reference_stats.gp",
      f"{BEAM}/data/Landp1Data/land1Data.csv")
 _add("beam", "asset", f"{BEAM}/data/landDefomed_original_powerpoint_export.pdf")
-_add("beam", "static", f"{BEAM}/figures/landbeam.png")
+_add("beam", "asset", f"{BEAM}/data/mesh/landBeam_level3_40x4x4_mm.vtk")
 
 _add("inflation", "data", *(f"{INF}/data/midWallLines/mesh{i}/midLineDeformed.txt" for i in (1, 2, 3)))
 _add("inflation", "asset", f"{INF}/data/land_problem2_m3_combined_overlay_original_keynote.pdf",
      f"{INF}/data/fieldRenderLayer/fig14b_layer.png", f"{INF}/data/fieldRenderLayer/fig14b_layer.json")
-_add("inflation", "static", f"{INF}/figures/Land_Geom.png")
+_add("inflation", "asset", f"{INF}/data/mesh/landVentricle_mesh1_15x3x36_mm.vtk")
 
 _add("contraction", "data", *(f"{CON}/data/midWallLines/mesh{i}/midLineDeformed.txt" for i in (1, 2, 3)))
 _add("contraction", "asset", f"{CON}/data/land_problem3_m3_combined_overlay_original_keynote.pdf")
