@@ -1,10 +1,10 @@
 # Machine-readable list of the 35 figure files included by the manuscript (cas-sc-tFableEdits (14).tex, 10 Nov 2026).
-# kind: plot = drawn from tabulated data; overlay = data layer drawn from data + Keynote overlay asset;
+# kind: plot = drawn from tabulated data; drawing = vector diagram drawn from the geometry; overlay = data layer drawn from data + Keynote overlay asset;
 #       field = archived ParaView raster layer + regenerated colour bar/labels; retypeset = original export raster + regenerated colour bar;
 #       static = image copied unchanged.  approved = the file embedded in the compiled manuscript PDF of 10 Nov 2026.
 figure	panel	label	output	case	kind	approved
 1	-	fig:fourier_verification_cuts	normalisedSpectralCuts.pdf	fourier	plot	01_fourierVerification/figures/normalisedSpectralCuts.pdf
-2	a	fig:MMS_Cube_SigmaXX	MMS_Poly_Mesh.pdf	mms	static	02_manufacturedSolution/figures/MMS_Poly_Mesh.pdf
+2	a	fig:MMS_Cube_SigmaXX	MMS_Poly_Mesh.pdf	mms	drawing	02_manufacturedSolution/figures/MMS_Poly_Mesh.pdf
 2	b	fig:MMS_Cube_SigmaXX	MMS_SigmaXX (2).pdf	mms	field	02_manufacturedSolution/figures/MMS_SigmaXX (2).pdf
 3	a	fig:MMS_Disp_graphs	mms_dispErrors.pdf	mms	plot	02_manufacturedSolution/figures/mms_dispErrors.pdf
 3	b	fig:MMS_Disp_graphs	mms_disp_orderOfAccuracy.pdf	mms	plot	02_manufacturedSolution/figures/mms_disp_orderOfAccuracy.pdf
@@ -12,26 +12,30 @@ figure	panel	label	output	case	kind	approved
 4	b	fig:MMS_stress_graphs	mms_stress_orderOfAccuracy_v2.pdf	mms	plot	02_manufacturedSolution/figures/mms_stress_orderOfAccuracy_v2.pdf
 5	a	fig:MMS_pressure_graphs	mms_pressureErrors.pdf	mms	plot	02_manufacturedSolution/figures/mms_pressureErrors.pdf
 5	b	fig:MMS_pressure_graphs	mms_pressure_orderOfAccuracy.pdf	mms	plot	02_manufacturedSolution/figures/mms_pressure_orderOfAccuracy.pdf
-6	a	fig:linear_cooks_geometry	cooksDiagram.png	linearCooks	static	03_linearCooksMembrane/figures/cooksDiagram.png
-6	b	fig:linear_cooks_geometry	cooksCoarseMesh2.png	linearCooks	static	03_linearCooksMembrane/figures/cooksCoarseMesh2.png
+6	a	fig:linear_cooks_geometry	cooksDiagram.pdf	linearCooks	drawing	03_linearCooksMembrane/figures/cooksDiagram.png
+6	b	fig:linear_cooks_geometry	cooksCoarseMesh2.pdf	linearCooks	drawing	03_linearCooksMembrane/figures/cooksCoarseMesh2.png
 7	a	fig:linear_cooks_refinement	figure5_structured_displacement_sm1p0.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure5_structured_displacement_sm1p0.pdf
 7	b	fig:linear_cooks_refinement	figure5_execution_time_vs_error_sm1p0.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure5_execution_time_vs_error_sm1p0.pdf
 8	a	fig:linear_cooks_pressure_scale	figure6_pressure_scale_m1_sm1p0.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure6_pressure_scale_m1_sm1p0.pdf
 8	b	fig:linear_cooks_pressure_scale	figure6_pressure_scale_m2_sm1p0.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure6_pressure_scale_m2_sm1p0.pdf
 8	c	fig:linear_cooks_pressure_scale	figure6_pressure_scale_m3_sm1p0.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure6_pressure_scale_m3_sm1p0.pdf
 8	d	fig:linear_cooks_pressure_scale	figure6_pressure_scale_rhiechow_sm1p0.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure6_pressure_scale_rhiechow_sm1p0.pdf
-9	a	fig:linear_cooks_unstructured	unstructured_cooks3.png	linearCooks	static	03_linearCooksMembrane/figures/unstructured_cooks3.png
+9	a	fig:linear_cooks_unstructured	unstructured_cooks3.pdf	linearCooks	drawing	03_linearCooksMembrane/figures/unstructured_cooks3.png
 9	b	fig:linear_cooks_unstructured	figure7b_unstructured_displacement.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure7b_unstructured_displacement.pdf
-10	a	fig:large_strain_cooks_compressible	sigmaCompressibleLargeStrainCooks_cropped_kPa.png	nonlinearCooks	field	04_nonlinearCooksMembrane/compressible/figures/sigmaCompressibleLargeStrainCooks_cropped_kPa.png
+10	a	fig:large_strain_cooks_compressible	sigmaCompressibleLargeStrainCooks_cropped_kPa.pdf	nonlinearCooks	field	04_nonlinearCooksMembrane/compressible/figures/sigmaCompressibleLargeStrainCooks_cropped_kPa.png
 10	b	fig:large_strain_cooks_compressible	LargeStrainCooksIncomp.pdf	nonlinearCooks	plot	04_nonlinearCooksMembrane/compressible/figures/LargeStrainCooksIncomp.pdf
 11	-	fig:large_strain_cooks_incompressible	largeStrainIncompCooksMembrane-neoHookeanTipDispConvergenceStabCompatible.pdf	nonlinearCooks	plot	04_nonlinearCooksMembrane/nearIncompressible/figures/largeStrainIncompCooksMembrane-neoHookeanTipDispConvergenceStabCompatible.pdf
-12	a	fig:land_beam_geometry	landbeam.png	beam	static	05_heartTissueBeam/figures/landbeam.png
+12	a	fig:land_beam_geometry	landbeam.pdf	beam	drawing	05_heartTissueBeam/figures/landbeam.png
 12	b	fig:land_beam_geometry	landDefomed.pdf	beam	retypeset	05_heartTissueBeam/figures/landDefomed.pdf
 13	-	fig:land_beam_tip_deflection	land_problem1_m3_verticalDisplacement_vs_cellSize.pdf	beam	plot	05_heartTissueBeam/figures/land_problem1_m3_verticalDisplacement_vs_cellSize.pdf
-14	a	fig:land_lv_geometry	Land_Geom.png	inflation	static	06_lvInflation/figures/Land_Geom.png
-14	b	fig:land_lv_geometry	LandDeformed.png	inflation	field	06_lvInflation/figures/LandDeformed.png
-15	-	fig:land_lv_refinement	land_problem2_m3_combined_overlay.pdf	inflation	overlay	06_lvInflation/figures/land_problem2_m3_combined_overlay.pdf
-16	-	fig:land_active_refinement	land_problem3_m3_combined_overlay.pdf	contraction	overlay	07_lvContraction/figures/land_problem3_m3_combined_overlay.pdf
+14	a	fig:land_lv_geometry	Land_Geom.pdf	inflation	drawing	06_lvInflation/figures/Land_Geom.png
+14	b	fig:land_lv_geometry	LandDeformed.pdf	inflation	field	06_lvInflation/figures/LandDeformed.png
+15	a	fig:land_lv_refinement	land_problem2_m3_combined_overlay_a.pdf	inflation	overlay	06_lvInflation/figures/land_problem2_m3_combined_overlay.pdf
+15	b	fig:land_lv_refinement	land_problem2_m3_combined_overlay_b.pdf	inflation	overlay	06_lvInflation/figures/land_problem2_m3_combined_overlay.pdf
+15	c	fig:land_lv_refinement	land_problem2_m3_combined_overlay_c.pdf	inflation	overlay	06_lvInflation/figures/land_problem2_m3_combined_overlay.pdf
+16	a	fig:land_active_refinement	land_problem3_m3_combined_overlay_a.pdf	contraction	overlay	07_lvContraction/figures/land_problem3_m3_combined_overlay.pdf
+16	b	fig:land_active_refinement	land_problem3_m3_combined_overlay_b.pdf	contraction	overlay	07_lvContraction/figures/land_problem3_m3_combined_overlay.pdf
+16	c	fig:land_active_refinement	land_problem3_m3_combined_overlay_c.pdf	contraction	overlay	07_lvContraction/figures/land_problem3_m3_combined_overlay.pdf
 17	a	fig:linear_cooks_refinement_sm01	figure5_structured_displacement_sm0p1.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure5_structured_displacement_sm0p1.pdf
 17	b	fig:linear_cooks_refinement_sm01	figure5_execution_time_vs_error_sm0p1.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure5_execution_time_vs_error_sm0p1.pdf
 18	a	fig:linear_cooks_pressure_scale_sm01	figure6_pressure_scale_m1_sm0p1.pdf	linearCooks	plot	03_linearCooksMembrane/figures/figure6_pressure_scale_m1_sm0p1.pdf

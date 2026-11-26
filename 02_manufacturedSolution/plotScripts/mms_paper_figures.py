@@ -195,8 +195,8 @@ def render_errors(path: Path, key: str, tables, slopes) -> None:
     gx = guide[:, 0]
     first = spec["first_order_factor"] * guide[:, 1]
     second = guide[:, 2]
-    ax.plot(gx, first, color=pfs.INK, linewidth=1.0, zorder=2, label="_first")
-    ax.plot(gx, second, color=pfs.INK, linewidth=1.0, zorder=2, label="_second")
+    ax.plot(gx, first, color=pfs.INK, linewidth=pfs.REFERENCE_LINE_WIDTH, zorder=2, label="_first")
+    ax.plot(gx, second, color=pfs.INK, linewidth=pfs.REFERENCE_LINE_WIDTH, zorder=2, label="_second")
     pfs.record_series(path.name, "guide:first-order", gx, first)
     pfs.record_series(path.name, "guide:second-order", gx, second)
     ax.set_xlim(ERROR_XLIM)

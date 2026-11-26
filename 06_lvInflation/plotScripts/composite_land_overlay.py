@@ -45,6 +45,9 @@ PLACEMENTS = {
         ((263.2329, 63.0092, 384.4167, 461.3), (0.889853, 0, 0, 0.889853, 263.2329, 63.00916)),
     ],
 }
+# panel index (0 full line, 1 apex, 2 inflection) of each faint layer, in drawing order
+# (checked by drawing each layer alone: in Fig 16 /Fm2 is the inflection and /Fm3 the apex)
+FAINT_PANEL = {2: (0, 1, 2), 3: (0, 2, 1)}
 # matrices of the data copies to remove (matched on the scale factor)
 DATA_SCALES = {2: (0.877236, 0.876243, 0.871905), 3: (0.889853,)}
 # Fig 16 only: the group that draws /Fm3 also contains hand-typed tick labels
@@ -191,14 +194,135 @@ def composite(problem: int, overlay: Path, layer: Path, output: Path) -> None:
     print(f"Wrote {output} (removed {removed} pasted data groups, added {len(PLACEMENTS[problem])} layer placements)")
 
 
+def compose_compact(problem: int, overlay: Path, layer: Path, output: Path) -> None:
+    """New page in the compact layout: each faint Land et al. layer moved with its panel.
+
+    For panel k the faint layer keeps its alignment with the data because it
+    is drawn with T_k = A_new o A_old^-1, where A_old maps data (x, z) to the
+    Keynote page (layer panel geometry + Keynote placement) and A_new maps
+    data to the new page (compact panel geometry at LAYER_SCALE).  Both are
+    axis-aligned affine maps, so T_k is a per-axis scale plus a shift.
+    """
+    import render_land_midline_layers as R
+
+    old_panels = R.PROBLEMS[problem]["panels"]
+    compact = R.compact_layout(problem)
+    new_panels = compact["panels"]
+    S = R.LAYER_SCALE
+    page_w, page_h = (S * v for v in compact["page"])
+
+    reader = PdfReader(str(overlay))
+    writer = PdfWriter()
+    writer.append(reader)
+    page = writer.pages[0]
+    ops = ContentStream(page.get_contents(), writer).operations
+
+    # the three faint layers, in drawing order: clip rectangle, alpha states, form name;
+    # reordered to the panel index (0 full line, 1 apex, 2 inflection)
+    found = []
+    for start, end in top_level_groups(ops):
+        _, dos = group_info(ops, start, end)
+        if not dos:
+            continue
+        rect = next([float(v) for v in operands] for operands, op in ops[start:end + 1] if _op_name(op) == "re")
+        # alpha states set BEFORE the faint layer is drawn (later ones belong to Keynote text, e.g. /Gs3 = opaque)
+        states = []
+        for operands, op in ops[start:end + 1]:
+            if _op_name(op) == "Do":
+                break
+            if _op_name(op) == "gs":
+                states.append(str(operands[0]))
+        found.append((rect, states, dos[0]))
+    if len(found) != len(new_panels):
+        raise RuntimeError(f"expected {len(new_panels)} faint layers, found {len(found)}")
+    faint = [None] * len(found)
+    for drawn, panel_index in enumerate(FAINT_PANEL[problem]):
+        faint[panel_index] = found[drawn]
+
+    # data layer as a Form XObject (same import as composite())
+    layer_page = PdfReader(str(layer)).pages[0]
+    writer.add_page(layer_page)
+    imported = writer.pages[-1]
+    form = StreamObject()
+    form[NameObject("/Type")] = NameObject("/XObject")
+    form[NameObject("/Subtype")] = NameObject("/Form")
+    form[NameObject("/FormType")] = FloatObject(1)
+    form[NameObject("/BBox")] = ArrayObject([FloatObject(float(v)) for v in layer_page.mediabox])
+    form[NameObject("/Resources")] = imported["/Resources"]
+    form.set_data(imported.get_contents().get_data())
+    form_ref = writer._add_object(form)
+    writer.remove_page(len(writer.pages) - 1)
+    resources = page["/Resources"]
+    xobjects = resources["/XObject"].get_object()
+    layer_name = "/FmDataLayer2026"
+    xobjects[NameObject(layer_name)] = form_ref
+
+    def f(v):
+        return FloatObject(round(float(v), 6))
+
+    placements = PLACEMENTS[problem]
+    new_ops = []
+    for k, (old, new, (rect, states, fm)) in enumerate(zip(old_panels, new_panels, faint)):
+        _, (s, _, _, _, e, g) = placements[k if len(placements) == len(old_panels) else 0]
+        ax = S * new.width / (s * old.width)
+        bx = S * new.left - ax * (e + s * old.left)
+        az = S * new.height / (s * old.height)
+        bz = S * new.bottom - az * (g + s * old.bottom)
+        # old clip mapped to the new page, intersected with the new panel frame
+        x0, y0 = ax * rect[0] + bx, az * rect[1] + bz
+        x1, y1 = ax * (rect[0] + rect[2]) + bx, az * (rect[1] + rect[3]) + bz
+        fx0, fy0 = S * new.left, S * new.bottom
+        fx1, fy1 = fx0 + S * new.width, fy0 + S * new.height
+        cx0, cy0, cx1, cy1 = max(x0, fx0), max(y0, fy0), min(x1, fx1), min(y1, fy1)
+        new_ops += [([], b"q"), ([f(cx0), f(cy0), f(cx1 - cx0), f(cy1 - cy0)], b"re"), ([], b"W"), ([], b"n"),
+                    ([f(ax), f(0), f(0), f(az), f(bx), f(bz)], b"cm")]
+        new_ops += [([NameObject(gs)], b"gs") for gs in states]
+        new_ops += [([NameObject(fm)], b"Do"), ([], b"Q")]
+    new_ops += [([], b"q"), ([f(S), f(0), f(0), f(S), f(0), f(0)], b"cm"), ([NameObject(layer_name)], b"Do"),
+                ([], b"Q")]
+    content = ContentStream(page.get_contents(), writer)
+    content.operations = new_ops
+    page.replace_contents(content)
+    box = ArrayObject([f(0), f(0), f(page_w), f(page_h)])
+    for key in ("/MediaBox", "/CropBox", "/BleedBox", "/TrimBox", "/ArtBox"):
+        if key in page or key == "/MediaBox":
+            page[NameObject(key)] = box
+
+    # keep only what the new page uses
+    fonts = resources.get("/Font")
+    if fonts is not None:
+        del resources["/Font"]
+    used = {fm for _, _, fm in faint} | {layer_name}
+    for key in [k for k in xobjects.keys() if str(k) not in used]:
+        del xobjects[key]
+    layer_ops = ContentStream(form, writer).operations
+    used_fonts = {str(operands[0]) for operands, op in layer_ops if _op_name(op) == "Tf"}
+    layer_fonts = form["/Resources"].get_object().get("/Font")
+    if layer_fonts is not None:
+        layer_fonts = layer_fonts.get_object()
+        for key in [k for k in layer_fonts.keys() if str(k) not in used_fonts]:
+            del layer_fonts[key]
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    writer.add_metadata({"/Title": f"Land problem {problem}: mid-wall deformation with Land et al. (2015) overlay",
+                         "/Subject": "compact layout: (a) left, (b)/(c) stacked right; faint layers moved with their panels"})
+    with output.open("wb") as handle:
+        writer.write(handle)
+    print(f"Wrote {output} (compact layout, {page_w:.1f} x {page_h:.1f} pt)")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--problem", type=int, choices=(2, 3), required=True)
     parser.add_argument("--overlay", type=Path, required=True, help="original Keynote overlay PDF")
     parser.add_argument("--layer", type=Path, required=True, help="re-rendered data layer PDF")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--layout", choices=("keynote", "compact"), default="keynote")
     args = parser.parse_args()
-    composite(args.problem, args.overlay, args.layer, args.output)
+    if args.layout == "compact":
+        compose_compact(args.problem, args.overlay, args.layer, args.output)
+    else:
+        composite(args.problem, args.overlay, args.layer, args.output)
 
 
 if __name__ == "__main__":

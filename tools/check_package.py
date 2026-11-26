@@ -31,7 +31,6 @@ MODULES = {  # import name -> (pip name, minimum version or None)
     "pypdf": ("pypdf", None),
     "PIL": ("pillow", None),
 }
-DEFAULT_FONT_FILE = "/System/Library/Fonts/Helvetica.ttc"
 
 errors: list[str] = []
 warnings: list[str] = []
@@ -70,21 +69,17 @@ def check_deps(cases: list[str]) -> None:
             print(f"   ok   {program} ({path})")
         else:
             errors.append(f"program '{program}' (poppler) not found on PATH; needed for: {used_by}")
-    # fonts
-    font_file = os.environ.get("JFNK_PAPER_FONT_FILE", DEFAULT_FONT_FILE)
-    if {"inflation", "contraction"} & set(cases):
-        if os.path.isfile(font_file):
-            print(f"   ok   font file {font_file}")
-        else:
-            errors.append(f"font file not found: {font_file} (needed for Figs 15 and 16; set JFNK_PAPER_FONT_FILE, "
-                          "see README.md)")
+    # fonts: STIXGeneral as bundled with matplotlib (same family as the cas-sc text/maths)
     try:
-        from matplotlib import font_manager
-        found = font_manager.findfont("Helvetica", fallback_to_default=False)
-        print(f"   ok   matplotlib font Helvetica ({found})")
-    except Exception:  # noqa: BLE001
-        warnings.append("matplotlib cannot find the Helvetica font: the line figures will be drawn with a fallback "
-                        "font (Arial, Liberation Sans or DejaVu Sans) and will not match the approved typography")
+        import matplotlib
+        for name in ("STIXGeneral.ttf", "STIXGeneralBol.ttf"):
+            path = Path(matplotlib.get_data_path()) / "fonts" / "ttf" / name
+            if path.is_file():
+                print(f"   ok   font {path}")
+            else:
+                errors.append(f"matplotlib's bundled font {name} not found at {path}")
+    except Exception as error:  # noqa: BLE001
+        errors.append(f"cannot locate matplotlib's STIX fonts ({error})")
 
 
 def check_inputs(cases: list[str]) -> None:

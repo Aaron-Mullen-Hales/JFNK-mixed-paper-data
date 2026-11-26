@@ -41,6 +41,7 @@ try:
 except ImportError as error:
     raise SystemExit(f"ERROR: shared style module not found in {STYLE_DIR}: {error}") from error
 
+from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.ticker import (  # noqa: E402
     FixedLocator, FuncFormatter, LogLocator, MaxNLocator, MultipleLocator, NullFormatter,
 )
@@ -365,6 +366,16 @@ PANEL_WIDTH_FRACTION = 0.49          # Figs 7, 8, 17, 18: subfigure[t]{0.49\line
 PANEL_ASPECT = 0.76
 UNSTRUCTURED_WIDTH_FRACTION = 0.63   # Fig 9(b): subfigure[t]{0.63\linewidth}
 UNSTRUCTURED_ASPECT = 0.62
+# Figs 8, 18: four subfigures per figure with identical axes boxes and the
+# legend inside the axes, upper right (no legend band).
+PARAMETER_LAYOUT = pfs.SubfigureLayout(width_fraction=PANEL_WIDTH_FRACTION, axes_height_in=1.85)
+
+
+def nice_bounds(values: list[float], step: float = 2.0, margin: float = 0.3) -> tuple[float, float]:
+    """Axis limits at multiples of ``step`` with at least ``margin`` around the data."""
+    finite = [v for v in values if math.isfinite(v)]
+    return (math.floor((min(finite) - margin) / step) * step,
+            math.ceil((max(finite) + margin) / step) * step)
 
 
 def _cells_axis(ax, xb: tuple[float, float]) -> None:
@@ -478,10 +489,7 @@ def render_parameter_panel(
         finite_bounds(xs),
         finite_bounds(ys, padding=0.12),
     )
-    method_marker = pfs.method_style(style_key).marker
-    method_label = pfs.method_style(style_key).label
-
-    fig, ax = pfs.new_figure(PANEL_WIDTH_FRACTION, PANEL_ASPECT)
+    fig, ax = pfs.new_subfigure(PARAMETER_LAYOUT)
     pfs.style_axes(ax)
     bx, by = zip(*benchmark)
     ax.plot(bx, by, **pfs.reference_kwargs(0, label=BENCHMARK_LABEL))
@@ -490,7 +498,7 @@ def render_parameter_panel(
         px, py = zip(*points)
         ax.plot(
             px, py,
-            color=SCALE_COLOURS[scale], marker=method_marker, linestyle="-",
+            color=SCALE_COLOURS[scale], marker=pfs.PRESSURE_SCALE_MARKERS[scale], linestyle="-",
             markerfacecolor="none", markeredgecolor=SCALE_COLOURS[scale],
             label=scale, zorder=3,
         )
@@ -499,11 +507,14 @@ def render_parameter_panel(
     ax.set_ylim(yb)
     ax.yaxis.set_major_locator(MaxNLocator(nbins=7, steps=[1, 2, 5]))
     ax.set_ylabel(DISPLACEMENT_LABEL)
-    # The legend title carries the method identity (new index) and the
-    # meaning of the entries; the LaTeX sub-caption repeats the method name.
-    leg = pfs.legend(ax, loc="upper right", ncols=2,
-                     title=f"{method_label}: $s_p^\\star$")
-    pfs.assert_legend_clear(fig, ax, leg, path.name)
+    # Legend inside the axes, upper right: the benchmark above the six
+    # s_p^star values (two rows of three, keyed by s_p^star on the left).
+    # The sub-caption names the method.
+    lines = [h for h in ax.get_lines() if not h.get_label().startswith("_")]
+    legs = pfs.keyed_legend(ax, [lines[0]], lines[1:], "$s_p^\\star$", ncols=3,
+                            handlelength=1.5, handletextpad=0.4, columnspacing=0.8)
+    pfs.assert_artists_clear(fig, ax, legs, path.name)
+    pfs.check_subfigure(fig, ax, None, path.name)
     pfs.record_axes(path.name, ax)
     pfs.save(fig, path, title=f"Linear Cook's membrane: {path.stem}")
 
@@ -614,13 +625,18 @@ def main() -> None:
             args.mode,
             timing_bounds,
         )
+        # one y-range for the four panels of this figure (Fig 8: s_m = 1, Fig 18: s_m = 0.1)
+        figure_ys = [y for _, method, _ in PARAMETER_PLOTS
+                     for _, points in parameter_series(parameter[sm], method) for _, y in points]
+        figure_ys += [y for _, y in read_benchmark()]
+        figure_bounds = (parameter_axis_bounds[0], nice_bounds(figure_ys))
         for name, method, style_key in PARAMETER_PLOTS:
             render_parameter_panel(
                 output_dir / f"figure6_pressure_scale_{name}_{suffix}.pdf",
                 parameter[sm],
                 method,
                 style_key,
-                parameter_axis_bounds,
+                figure_bounds,
             )
     render_method_displacement(
         output_dir / "figure7b_unstructured_displacement.pdf",
